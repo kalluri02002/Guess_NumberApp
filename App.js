@@ -1,20 +1,80 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { StyleSheet ,ImageBackground,SafeAreaView} from 'react-native';
+import {LinearGradient} from 'expo-linear-gradient';
+import StartScreen from './screens/StartScreen';
+import { useState } from 'react';
+import MiddleSreen from './screens/middleScreen';
+import Color from './constants/Color';
+import EndSreen from './screens/endScreen';
+
+
 
 export default function App() {
+  const [Number5,Setnumber]=useState()
+  const[isGameOver,setGameover]=useState(false)
+  const[RoundC,setRound]=useState(0)
+  function getNumber(val){
+    Setnumber(val)
+  } 
+  function OnGameOver(numberOfRoudes){
+    setGameover(true)
+    setRound(numberOfRoudes)
+  }
+  function StartNewGame(){
+    setRound(0)
+    Setnumber(null)
+    setGameover(false)
+    
+
+  }
+  let screens=<StartScreen getNumber={getNumber}/>
+  if (Number5){
+    screens=<MiddleSreen userNumber={Number5} GameOver={OnGameOver} />
+
+  }
+  if (isGameOver && Number5){
+    screens=<EndSreen userNumber={Number(Number5)} RoundCount={RoundC} StartNewGame={StartNewGame}/>
+  }
+
+  
+
+    
+
+  
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <LinearGradient colors={[Color.primary1,Color.pasupu]} style={styles.rootApp}>
+      <ImageBackground source={require("./assets/images/Dice.jpg")} 
+      resizeMode='cover'
+      style={styles.rootApp}
+      imageStyle={styles.IMageStyle}
+
+      >
+        <SafeAreaView style={styles.rootApp}>
+
+         {screens}
+        </SafeAreaView>
+        
+      
+      </ImageBackground>
+   </LinearGradient>
+      
+   
+   
+
+      
+   
+    
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  rootApp:{
+    flex:1,
+
+    
   },
+  IMageStyle:{
+    opacity:0.15
+  }
+ 
 });
